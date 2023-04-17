@@ -49,7 +49,7 @@ class landingPage extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      "Be your own kind of a beautiful and create a new look",
+                      "Be your own kind of a beautiful and create a new looks",
                       style: TextStyle(
                         fontSize: 12
                       ),
