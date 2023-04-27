@@ -62,6 +62,15 @@ flutter:
   assets:
     - assets/
     - assets/landing-page-pic0.png
+    - assets/abstract.jpg
+    - assets/towels.jpg
+    - assets/facial.png
+    - assets/body-massage.png
+    - assets/waxing.png
+    - assets/aromatherapy.png
+    - assets/manicure-padicure.png
+    - assets/nail-care.png
+    - assets/hair-spa.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
