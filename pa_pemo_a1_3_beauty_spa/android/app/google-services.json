@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587178344474",
+    "project_id": "beauty-spa-apps",
+    "storage_bucket": "beauty-spa-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587178344474:android:9f8513bee51ed5e413d1a3",
+        "android_client_info": {
+          "package_name": "com.example.pa_pemo_a1_3_beauty_spa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587178344474-5h9f9e88r8t73e4l9f55ehn4fteqvbf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBrHPfbWPUInozmQjP_37gcEk3aLNv4WA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587178344474-5h9f9e88r8t73e4l9f55ehn4fteqvbf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

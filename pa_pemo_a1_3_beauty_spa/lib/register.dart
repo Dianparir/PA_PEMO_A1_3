@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/login_page.dart';
+// import 'package:get/get.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/login_fix.dart';
+// import 'authentitification_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -36,7 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     hintText: "name",
                   ),
@@ -44,7 +47,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "email",
                   ),
@@ -52,7 +56,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     hintText: "birth",
                   ),
@@ -60,7 +65,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: "gender",
                   ),
@@ -68,7 +74,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: "phone number",
                   ),
@@ -76,7 +83,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: TextField(
+                child: TextFormField(
+                  keyboardType: TextInputType.none,
                   decoration: InputDecoration(
                     hintText: "password",
                   ),

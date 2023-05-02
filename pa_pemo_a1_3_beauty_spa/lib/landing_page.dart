@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/login_page.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/login_fix.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/main.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/register.dart';
 
@@ -105,7 +105,8 @@ class landingPage extends StatelessWidget {
                               context, 
                               MaterialPageRoute(
                                 builder: (_){
-                                  return RegisterPage();
+                                  // return RegisterPage();
+                                  return LoginPage();
                               }),
                             );
                           },
@@ -139,6 +140,9 @@ class landingPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: size.height * 0.07),
+                    )
                   ]
                 ),
               ),
