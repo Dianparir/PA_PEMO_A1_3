@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "587178344474",
-    "project_id": "beauty-spa-apps",
-    "storage_bucket": "beauty-spa-apps.appspot.com"
+    "project_number": "417160342850",
+    "project_id": "beauty-spa-pa",
+    "storage_bucket": "beauty-spa-pa.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:587178344474:android:9f8513bee51ed5e413d1a3",
+        "mobilesdk_app_id": "1:417160342850:android:af177ef297ee4df09eacdb",
         "android_client_info": {
           "package_name": "com.example.pa_pemo_a1_3_beauty_spa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "587178344474-5h9f9e88r8t73e4l9f55ehn4fteqvbf8.apps.googleusercontent.com",
+          "client_id": "417160342850-ma98ptgem5qph7717lb6mmr6ci1v0vfk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDBrHPfbWPUInozmQjP_37gcEk3aLNv4WA"
+          "current_key": "AIzaSyATDkwd_L4Zu0kucgUMX5fvgNXKf1wkwi0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "587178344474-5h9f9e88r8t73e4l9f55ehn4fteqvbf8.apps.googleusercontent.com",
+              "client_id": "417160342850-ma98ptgem5qph7717lb6mmr6ci1v0vfk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

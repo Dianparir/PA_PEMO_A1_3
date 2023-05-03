@@ -194,14 +194,14 @@ class _LoginPageState extends State<LoginPage> {
                           margin: EdgeInsets.only(bottom: size.height * 0.05),
                           child: Text.rich(
                             TextSpan(
-                              text: "Create an account? ",
+                              text: "Don't have an account? ",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.black
                               ),
                               children: [
                                 TextSpan(
-                                  text: "Register",
+                                  text: "Sign Up",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color.fromARGB(255, 184, 35, 73),

@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/detail_treatment.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -127,7 +128,9 @@ class _homePageState extends State<homePage> {
 
             //nail care
             InkWell(
-              onTap: () {},
+              onTap: () {
+                DetailTreatmentPage(name_treatment: "nail care");
+              },
               child: Container(
                 alignment: Alignment.topCenter,
                 padding: const EdgeInsets.all(10),
