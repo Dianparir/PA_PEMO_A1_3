@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/landing_page.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/profile_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/splash_screen.dart';
+import 'package:get/get.dart';
+import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Beauty Spa',
       home: SplashScreen(),
+      // home: ProfilePage(),
     );
   }
 }

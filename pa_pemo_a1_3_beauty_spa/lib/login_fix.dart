@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/landing_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/register.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/authentification_service.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -23,12 +25,18 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController(text: "");
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Color.fromARGB(255, 252, 198, 203),
         body: Form(
           key: _formKey,
@@ -81,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           width: size.width / 1.3,
                           child: TextFormField(
+                            controller: usernameController,
                             // keyboardType: TextInputType.none,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -110,6 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           width: size.width / 1.3,
                           child: TextFormField(
+                            // controller: passwordController,
+                            // passwordController.text = ValueBuilder;
                             obscureText: _isHidePassword,
                             autofocus: false,
                             initialValue: '',
@@ -140,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Password Tidak Boleh Kosong';
+                                return 'Password Cannot Be Empty';
                               }
                               return null;
                             },
@@ -165,16 +176,91 @@ class _LoginPageState extends State<LoginPage> {
                             ]
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Navigator.pop(context);
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate() && usernameController.text == '' || passwordController.text == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login Failed")));
+                                // final mySnackBar = SnackBar(
+                                //   content: Text("Login Failed"),
+                                //   duration: Duration(seconds: 3),
+                                //   padding: EdgeInsets.all(10),
+                                //   backgroundColor: Colors.green.shade50,
+                                // );
+                                // Scaffold.of(context).showSnackBar(mySnackBar);
+
+                                Get.snackbar(
+                                  "", 
+                                  "",
+                                  backgroundColor: Colors.green.shade50,
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  titleText: Text(
+                                    "Login Failed",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600
+                                    ),
+                                  ),
+                                  messageText: Text(
+                                    "Please Fill All Field In Form",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context, 
                                   MaterialPageRoute(
                                     builder: (_){
-                                      return homePage();
+                                      return BottomNavItem();
                                   }),
                                 );
+                              } else {
+                                SignInSignUp? result = await AuthService.signInUsingEmailPassword(email: usernameController.text, password: passwordController.text);
+                                if(result?.user != null) {
+                                  Get.snackbar(
+                                    "", 
+                                    "",
+                                    backgroundColor: Colors.blueAccent,
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    titleText: Text(
+                                      "Login Success",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600
+                                      ),
+                                    ),
+                                    messageText: Text(
+                                      "Welcome Back",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    "", 
+                                    "",
+                                    backgroundColor: Colors.blueAccent,
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    titleText: Text(
+                                      "Login Failed",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600
+                                      ),
+                                    ),
+                                    messageText: Text(
+                                      result!.message.toString(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }
                               }
                             }, 
                             child: Text(
