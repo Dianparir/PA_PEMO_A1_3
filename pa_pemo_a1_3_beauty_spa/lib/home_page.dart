@@ -1,20 +1,17 @@
 // ignore_for_file: camel_case_types
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/booking_page.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/detail_page.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/detail_treatment.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/profile_page.dart';
+import 'package:paa/detail_treatment.dart';
+import 'package:paa/profile_page.dart';
 
-class homePage extends StatefulWidget {
-  const homePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<homePage> createState() => _homePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _homePageState extends State<homePage> {
+class _HomePageState extends State<HomePage> {
   bool switchOn = false; //dark and light theme
 
   @override
@@ -37,7 +34,7 @@ class _homePageState extends State<homePage> {
             children: [
               InkWell(
                 onTap: () {
-                  // BookingPage(namaTreatment: "Facial");
+                  Navigator.pushNamed(context, '/detailTreatmentPage1');
                 },
                 child: Container(
                   alignment: Alignment.topCenter,
@@ -48,16 +45,19 @@ class _homePageState extends State<homePage> {
                       children: [
                         Image.asset('assets/facial.png'),
                         const Text('Facial',
-                            style: TextStyle(fontSize: 16, color: Colors.black)),
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black)),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //body massage
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/detailTreatmentPage2');
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -66,17 +66,20 @@ class _homePageState extends State<homePage> {
                     child: Column(
                       children: [
                         Image.asset('assets/body-massage.png'),
-                        const Text('Body Massage',
-                            style: TextStyle(fontSize: 16, color: Colors.black)),
+                        const Text('Body Massage and Spa',
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black)),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //waxing
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/detailTreatmentPage3');
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -86,17 +89,18 @@ class _homePageState extends State<homePage> {
                       children: [
                         Image.asset('assets/waxing.png'),
                         const Text('Waxing',
-                            style: TextStyle(fontSize: 16, color: Colors.black)),
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black)),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //aromatherapy
               InkWell(
                 onTap: () {
-                  // DetailTreatmentPage(name_treatment: "Arommatherapy");
+                  Navigator.pushNamed(context, '/detailTreatmentPage4');
                 },
                 child: Container(
                   alignment: Alignment.topCenter,
@@ -107,16 +111,19 @@ class _homePageState extends State<homePage> {
                       children: [
                         Image.asset('assets/aromatherapy.png'),
                         const Text('Arommatherapy',
-                            style: TextStyle(fontSize: 16, color: Colors.black)),
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black)),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //meni pedi
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/detailTreatmentPage5');
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -125,20 +132,20 @@ class _homePageState extends State<homePage> {
                     child: Column(
                       children: [
                         Image.asset('assets/manicure-padicure.png'),
-                        const Text('Menicure & Pedicure',
+                        const Text('Manicure & Pedicure',
                             style: TextStyle(fontSize: 16, color: Colors.black),
-                            textAlign: TextAlign.center
-                        ),
+                            textAlign: TextAlign.center),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //nail care
               InkWell(
                 onTap: () {
-                  // DetailTreatmentPage(name_treatment: "nail care");
+                  Navigator.pushNamed(context, '/detailTreatmentPage6');
+                  //DetailTreatmentPage(name_treatment: "nail care");
                 },
                 child: Container(
                   alignment: Alignment.topCenter,
@@ -149,16 +156,19 @@ class _homePageState extends State<homePage> {
                       children: [
                         Image.asset('assets/nail-care.png'),
                         const Text('Nail Care Treatment',
-                            style: TextStyle(fontSize: 16, color: Colors.black)),
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black)),
                       ],
                     ),
                   ),
                 ),
               ),
-    
+
               //hair spa
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/detailTreatmentPage7');
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -169,8 +179,7 @@ class _homePageState extends State<homePage> {
                         Image.asset('assets/hair-spa.png'),
                         const Text('Hair Spa & Hair Mask',
                             style: TextStyle(fontSize: 16, color: Colors.black),
-                            textAlign: TextAlign.center
-                        ),
+                            textAlign: TextAlign.center),
                       ],
                     ),
                   ),
@@ -179,66 +188,34 @@ class _homePageState extends State<homePage> {
             ],
           ),
         ),
-        // bottomNavigationBar: BottomNavItem(),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   items: const <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.home),
-        //       label: "Home",
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.today,
-        //       ),
-        //       label: "Schedule",
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.person),
-        //       label: 'Account',
-        //     ),
-        //   ],
-        //   currentIndex: 0,
-        //   selectedItemColor: const Color.fromARGB(255, 255, 87, 166),
-        //   unselectedItemColor: Colors.grey,
-        //   showUnselectedLabels: true,
-        // ),
       ),
     );
   }
 }
 
-
 class BottomNavItem extends StatefulWidget {
-  // BottomNavItem({Key? key}) : super(key: key);
+  // const BottomNavItem({super.key});
 
   @override
   State<BottomNavItem> createState() => _BottomNavItemState();
 }
 
-class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateMixin{
-  int _currentIndex = 0;
-  List<Widget> pages = [];
-  User? _currentUser;
-
+class _BottomNavItemState extends State<BottomNavItem>
+    with TickerProviderStateMixin {
+  int currentIndex = 0;
   late Animation<double> animation;
   late AnimationController _animationController;
 
   void initState() {
-    super.initState();
-    _getCurrentUser();
-    pages = [
-      homePage(),
-      BookingPage(),
-      ProfilePage(user: _currentUser!),
-    ];
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
     )..addListener(() {
-      setState(() {});
-    });
-    
-    animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: _animationController, curve: Curves.fastOutSlowIn));
+        setState(() {});
+      });
+
+    animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+        parent: _animationController, curve: Curves.fastOutSlowIn));
     super.initState();
   }
 
@@ -247,22 +224,17 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
     super.dispose();
   }
 
-  Future<void> _getCurrentUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      _currentUser = user;
-    });
-  }
+  final List<Widget> pages = [
+    HomePage(),
+    DetailTreatmentPage2(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: pages,
-        ),
-        // pages[currentIndex],
+        body: pages[currentIndex],
         bottomNavigationBar: Transform.translate(
           offset: Offset(0, 100 * animation.value),
           child: CurvedNavigationBar(
@@ -271,7 +243,7 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
             animationDuration: Duration(milliseconds: 300),
             onTap: (index) {
               setState(() {
-                _currentIndex = index;
+                currentIndex = index;
               });
             },
             items: [
@@ -284,7 +256,7 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
                 color: Color.fromARGB(236, 182, 62, 62),
               ),
               Icon(
-                Icons.person, 
+                Icons.person,
                 color: Color.fromARGB(236, 182, 62, 62),
               ),
             ],
