@@ -12,6 +12,7 @@ import 'login_page.dart';
 import 'home_page.dart';
 import 'package:paa/booking_page.dart';
 import 'detail_treatment.dart';
+import 'schedule_page.dart';
 import 'account_page.dart';
 import 'package:paa/profile_page.dart';
 import 'about_page.dart';
@@ -70,7 +71,8 @@ class MyApp extends StatelessWidget {
         '/detailTreatmentPage5': (context) => const DetailTreatmentPage5(),
         '/detailTreatmentPage6': (context) => const DetailTreatmentPage6(),
         '/detailTreatmentPage7': (context) => const DetailTreatmentPage7(),
-        '/bookingPage': (context) => BookingPage(),
+        '/bookingPage': (context) => const BookingPage(),
+        '/schedulePage': (context) => SchedulePage(),
         '/accountPage': (context) => const AccountPage(),
         '/profilePage': (context) => ProfilePage(),
         '/aboutPage': (context) => const AboutPage(),
