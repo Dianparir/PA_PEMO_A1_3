@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/booking_page.dart';
 
 class DetailTreatmentPage extends StatelessWidget {
    DetailTreatmentPage({super.key, required this.name_treatment});
@@ -8,6 +10,12 @@ class DetailTreatmentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: InkWell(
+        onTap: (){
+          // BookingPage(namaTreatment: name_treatment,);
+        },
+        child: Container()),
+    );
   }
 }

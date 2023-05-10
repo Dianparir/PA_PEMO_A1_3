@@ -1,6 +1,8 @@
 // ignore_for_file: camel_case_types
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/booking_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/detail_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/detail_treatment.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/profile_page.dart';
@@ -34,7 +36,9 @@ class _homePageState extends State<homePage> {
             crossAxisSpacing: 10,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  // BookingPage(namaTreatment: "Facial");
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -91,7 +95,9 @@ class _homePageState extends State<homePage> {
     
               //aromatherapy
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  DetailTreatmentPage(name_treatment: "Arommatherapy");
+                },
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(10),
@@ -203,18 +209,28 @@ class _homePageState extends State<homePage> {
 
 
 class BottomNavItem extends StatefulWidget {
-  // const BottomNavItem({super.key});
+  // BottomNavItem({Key? key}) : super(key: key);
 
   @override
   State<BottomNavItem> createState() => _BottomNavItemState();
 }
 
 class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateMixin{
-  int currentIndex = 0;
+  int _currentIndex = 0;
+  List<Widget> pages = [];
+  User? _currentUser;
+
   late Animation<double> animation;
   late AnimationController _animationController;
 
   void initState() {
+    super.initState();
+    _getCurrentUser();
+    pages = [
+      homePage(),
+      BookingPage(),
+      ProfilePage(user: _currentUser!),
+    ];
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
@@ -231,17 +247,22 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
     super.dispose();
   }
 
-  final List<Widget> pages = [
-    homePage(),
-    detailPage(),
-    ProfilePage(),
-  ];
+  Future<void> _getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _currentUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: pages[currentIndex],
+        body: IndexedStack(
+          index: _currentIndex,
+          children: pages,
+        ),
+        // pages[currentIndex],
         bottomNavigationBar: Transform.translate(
           offset: Offset(0, 100 * animation.value),
           child: CurvedNavigationBar(
@@ -250,7 +271,7 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
             animationDuration: Duration(milliseconds: 300),
             onTap: (index) {
               setState(() {
-                currentIndex = index;
+                _currentIndex = index;
               });
             },
             items: [

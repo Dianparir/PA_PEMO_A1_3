@@ -2,10 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/landing_page.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/register.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/authentification_service.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/registration.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -15,9 +16,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final _formKey = GlobalKey<FormState>();
   bool _isHidePassword = true;
+  String _errorMessage = "";
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -25,10 +26,83 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController(text: "");
+  // Controller dan inisialisasi
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController(text: "");
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  Future<void> _login() async {
+    try {
+      final String email = _emailController.text.trim();
+      final String password = _passwordController.text.trim();
+
+      if (email.isEmpty || password.isEmpty) {
+        setState(() {
+          _errorMessage = 'Email and Password Cannot Be Empty';
+        });
+        return;
+      }
+
+      // Sign in user with Firebase Authentication
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Mengambil data user dari database
+      final DocumentSnapshot userDoc = await _db.collection('users').doc(userCredential.user!.uid).get();
+
+      if (userDoc.exists) {
+        // User Terdaftar di database
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+        String name = userData['name'];
+        String email = userData['email'];
+        String phone_number = userData['phone_number'];
+        String birth = userData['birth'];
+        String gender = userData['gender'];
+        String password = userData['password'];
+      } else {
+        // User tidak terdaftar di database
+        print('User does not exist in Firestore');
+      }
+
+      // Navigasi Ke HomePage
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (_){
+            return BottomNavItem();
+        }),
+      );
+    } catch (e) {
+      print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text('Error Message'),
+            ),
+            content: Text("Your Account Is Not Registered"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Center(
+                  child: Text(
+                    "OK"
+                  ),
+                )
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           width: size.width / 1.3,
                           child: TextFormField(
-                            controller: usernameController,
+                            controller: _emailController,
                             // keyboardType: TextInputType.none,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -103,14 +177,15 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.all(Radius.circular(7.0)),
                               ),
                               labelStyle: TextStyle(color: Colors.black),
-                              labelText: 'Username',
+                              labelText: 'Email',
+                              errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Nama Tidak Boleh Kosong';
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value!.isEmpty) {
+                            //     return 'Email Cannot Be Empty';
+                            //   }
+                            //   return null;
+                            // },
                           ),
                         ),
                         SizedBox(
@@ -119,12 +194,9 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           width: size.width / 1.3,
                           child: TextFormField(
-                            // controller: passwordController,
-                            // passwordController.text = ValueBuilder;
+                            controller: _passwordController,
                             obscureText: _isHidePassword,
                             autofocus: false,
-                            initialValue: '',
-                            // keyboardType: TextInputType.none,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Color.fromARGB(255, 184, 35, 73), width: 0.0),
@@ -148,13 +220,14 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               isDense: true,
+                              errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Password Cannot Be Empty';
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value!.isEmpty) {
+                            //     return 'Password Cannot Be Empty';
+                            //   }
+                            //   return null;
+                            // },
                           ),
                         ),
                         SizedBox(
@@ -176,93 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                             ]
                           ),
                           child: TextButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate() && usernameController.text == '' || passwordController.text == '') {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login Failed")));
-                                // final mySnackBar = SnackBar(
-                                //   content: Text("Login Failed"),
-                                //   duration: Duration(seconds: 3),
-                                //   padding: EdgeInsets.all(10),
-                                //   backgroundColor: Colors.green.shade50,
-                                // );
-                                // Scaffold.of(context).showSnackBar(mySnackBar);
-
-                                Get.snackbar(
-                                  "", 
-                                  "",
-                                  backgroundColor: Colors.green.shade50,
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                  ),
-                                  titleText: Text(
-                                    "Login Failed",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600
-                                    ),
-                                  ),
-                                  messageText: Text(
-                                    "Please Fill All Field In Form",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context, 
-                                  MaterialPageRoute(
-                                    builder: (_){
-                                      return BottomNavItem();
-                                  }),
-                                );
-                              } else {
-                                SignInSignUp? result = await AuthService.signInUsingEmailPassword(email: usernameController.text, password: passwordController.text);
-                                if(result?.user != null) {
-                                  Get.snackbar(
-                                    "", 
-                                    "",
-                                    backgroundColor: Colors.blueAccent,
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    titleText: Text(
-                                      "Login Success",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600
-                                      ),
-                                    ),
-                                    messageText: Text(
-                                      "Welcome Back",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  );
-                                } else {
-                                  Get.snackbar(
-                                    "", 
-                                    "",
-                                    backgroundColor: Colors.blueAccent,
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    titleText: Text(
-                                      "Login Failed",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600
-                                      ),
-                                    ),
-                                    messageText: Text(
-                                      result!.message.toString(),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  );
-                                }
-                              }
-                            }, 
+                            onPressed: _login,
                             child: Text(
                               "Login",
                               style: TextStyle(
