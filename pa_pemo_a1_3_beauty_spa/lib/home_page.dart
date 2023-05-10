@@ -96,7 +96,7 @@ class _homePageState extends State<homePage> {
               //aromatherapy
               InkWell(
                 onTap: () {
-                  DetailTreatmentPage(name_treatment: "Arommatherapy");
+                  // DetailTreatmentPage(name_treatment: "Arommatherapy");
                 },
                 child: Container(
                   alignment: Alignment.topCenter,
@@ -138,7 +138,7 @@ class _homePageState extends State<homePage> {
               //nail care
               InkWell(
                 onTap: () {
-                  DetailTreatmentPage(name_treatment: "nail care");
+                  // DetailTreatmentPage(name_treatment: "nail care");
                 },
                 child: Container(
                   alignment: Alignment.topCenter,
