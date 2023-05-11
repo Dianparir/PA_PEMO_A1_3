@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/landing_page.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/bottom_nav_bar.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/registration.dart';
 
 class LoginPage extends StatefulWidget {

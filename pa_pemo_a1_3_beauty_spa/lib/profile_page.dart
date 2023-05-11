@@ -2,7 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/bottom_nav_bar.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/login_fix.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -101,10 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ElevatedButton(
                     child: Text('Cancel'),
                     onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
-                        return BottomNavItem();
-                        // return ProfilePage(user: _currentUser);
-                      }));
+                      Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 184, 35, 73),
@@ -122,6 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (newValue.isNotEmpty && newValue != currentValue) {
                         // Update data
                         _updateUserData(field, newValue);
+                        // Navigator.of(context).pop();
                         // Navigator.pop(context);
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
                           return BottomNavItem();
@@ -195,74 +193,72 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.white54,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Positioned(
-                        top: 29.0,
-                        left: 16.0,
-                        child: Container(
-                          margin: EdgeInsets.only(left: 15.0, top: size.height * 0.02),
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(207, 93, 79, 79)
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios_new, 
-                              size: 14,
-                              color: Colors.white,
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Ink(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 15.0, top: size.height * 0.02),
+                            width: 35.0,
+                            height: 35.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(207, 93, 79, 79)
                             ),
-                            onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
-                                return BottomNavItem();
-                              }));
-                            },
-                          ),
-                        )
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: size.height * 0.02),
-                        child: Text(
-                          "Profile",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 182, 62, 62)
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 29.0,
-                        right: 16.0,
-                        child: Container(
-                          alignment: Alignment.topRight,
-                          margin: EdgeInsets.only(right: 15.0, top: size.height * 0.02),
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(207, 93, 79, 79),
-                          ),
-                          child: IconButton(
-                            onPressed: () async {
-                              await _auth.signOut();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginPage()),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.logout,
-                              size: 14,
-                              color: Colors.white,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios_new, 
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+                                  return BottomNavItem();
+                                }));
+                              },
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(top: size.height * 0.02),
+                          child: Text(
+                            "Profile",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 182, 62, 62)
+                            ),
+                          ),
+                        ),
+                        Ink(
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            margin: EdgeInsets.only(right: 15.0, top: size.height * 0.02),
+                            width: 35.0,
+                            height: 35.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(207, 93, 79, 79),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                await _auth.signOut();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.logout,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

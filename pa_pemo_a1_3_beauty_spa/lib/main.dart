@@ -4,18 +4,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/profile_page.dart';
 import 'home_page.dart';
+import 'login_fix.dart';
 import 'splash_screen.dart';
 import 'landing_page.dart';
 import 'registration.dart';
-import 'login_page.dart';
 import 'home_page.dart';
-import 'package:paa/booking_page.dart';
+import 'booking_page.dart';
 import 'detail_treatment.dart';
-import 'schedule_page.dart';
-import 'account_page.dart';
-import 'package:paa/profile_page.dart';
-import 'about_page.dart';
+import 'profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,20 +60,20 @@ class MyApp extends StatelessWidget {
         '/splashScreen': (context) => const SplashScreen(),
         '/landingPage': (context) => const landingPage(),
         '/registerPage': (context) => RegisterPage(),
-        '/loginPage': (context) => const LoginPage(),
-        '/homePage': (context) => const HomePage(),
-        '/detailTreatmentPage1': (context) => const DetailTreatmentPage1(),
-        '/detailTreatmentPage2': (context) => const DetailTreatmentPage2(),
-        '/detailTreatmentPage3': (context) => const DetailTreatmentPage3(),
-        '/detailTreatmentPage4': (context) => const DetailTreatmentPage4(),
-        '/detailTreatmentPage5': (context) => const DetailTreatmentPage5(),
-        '/detailTreatmentPage6': (context) => const DetailTreatmentPage6(),
-        '/detailTreatmentPage7': (context) => const DetailTreatmentPage7(),
-        '/bookingPage': (context) => const BookingPage(),
-        '/schedulePage': (context) => SchedulePage(),
-        '/accountPage': (context) => const AccountPage(),
-        '/profilePage': (context) => ProfilePage(),
-        '/aboutPage': (context) => const AboutPage(),
+        '/loginPage': (context) => LoginPage(),
+        '/homePage': (context) => HomePage(),
+        // '/detailTreatmentPage1': (context) => const DetailTreatmentPage1(),
+        // '/detailTreatmentPage2': (context) => const DetailTreatmentPage2(),
+        // '/detailTreatmentPage3': (context) => const DetailTreatmentPage3(),
+        // '/detailTreatmentPage4': (context) => const DetailTreatmentPage4(),
+        // '/detailTreatmentPage5': (context) => const DetailTreatmentPage5(),
+        // '/detailTreatmentPage6': (context) => const DetailTreatmentPage6(),
+        // '/detailTreatmentPage7': (context) => const DetailTreatmentPage7(),
+        // '/bookingPage': (context) => const BookingPage(),
+        // '/schedulePage': (context) => SchedulePage(),
+        // '/accountPage': (context) => const AccountPage(),
+        // '/profilePage': (context) => ProfilePage(user: _currentUser!),
+        // '/aboutPage': (context) => const AboutPage(),
       },
     );
   }
