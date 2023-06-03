@@ -1,7 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -23,10 +21,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _birthController = TextEditingController();
   // final TextEditingController _genderController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   String _errorMessage = '';
   String? _selectedGender;
   bool _isCheckboxChecked = false;
+  // bool isNumeric = false;
 
   Future<void> _registerUser() async {
     try {
@@ -90,7 +89,8 @@ class _RegisterPageState extends State<RegisterPage> {
         });
       } else {
         setState(() {
-          _errorMessage = 'Registration failed. Please try again later.';
+          // _errorMessage = 'Registration failed. Please try again later.';
+          _errorMessage = 'Please Complete the Fields';
         });
       }
     } catch (e) {
@@ -128,21 +128,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _nameController,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) => value!.isEmpty ? 'Field cannot be empty' : null
               ),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) => value!.isEmpty ? 'Field cannot be empty' : null
               ),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
+                validator: (value) => value!.isEmpty ? 'Field cannot be empty' : null
               ),
               TextFormField(
                 controller: _birthController,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(labelText: 'Birth'),
+                validator: (value) => value!.isEmpty ? 'Field cannot be empty' : null
               ),
               DropdownButtonFormField2<String>(
                 value: _selectedGender,
@@ -165,6 +169,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(labelText: 'Phone'),
+                // validator: (value) => value!.isEmpty ? 'Field tidak boleh kosong' : !isNumeric(value) ? 'Field harus berupa angka' : null,
+
               ),
               SizedBox(
                 height: 10.0

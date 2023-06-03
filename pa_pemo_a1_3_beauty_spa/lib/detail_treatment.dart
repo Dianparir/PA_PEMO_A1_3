@@ -1,47 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/booking_page.dart';
-// import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
-
-class treatments {
-  String treatment_name;
-  String pngSrc;
-  String description_tratments;
-  String price;
-  treatments(
-    this.treatment_name, 
-    this.pngSrc,
-    this.description_tratments,
-    this.price,
-  );
-}
+import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
 
 class DetailTreatments extends StatefulWidget {
-  final String treatment_name;
-  final String pngSrc;
-  final String description_tratments;
-  final String price;
+  final Treatments treatment;
   DetailTreatments(
-      {Key? key,
-      required this.treatment_name,
-      required this.pngSrc,
-      required this.description_tratments,
-      required this.price})
-      : super(key: key);
+    {Key? key, required this.treatment}) : super(key: key);
 
   @override
   State<DetailTreatments> createState() => _DetailTreatmentsState();
 }
 
 class _DetailTreatmentsState extends State<DetailTreatments> {
-  List <treatments> _TreatmensItem = [
-    treatments("Facial Treatment ","assets/facial.png", '''Facial adalah metode perawatan untuk kulit wajah yang meliputi pengelupasan kulit dan menghilangkan kotoran serta sel-sel kulit mati. Dengan begitu, tampilan wajah menjadi lebih segar, halus, dan cerah. Facial bisa memberikan manfaat berupa membersihkan kotoran, mengencangkan kulit, menghilangkan sel kulit mati, menghilangkan kantung mata, mengurangi pigmentasi, melawan tanda penuaan dini, dan meningkatkan penyerapan kulit dalam menyerap produk skincare.''', "Start Form Rp50.000,00"),
-    treatments("Body Massage and Spa ","assets/body-massage.png",'''Body spa bekerja dengan cara memberikan tekanan dan pijatan pada tubuh baik melalui alat bantu maupun secara manual. Body Massage and Spa benar-benar dapat meningkatkan relaksasi dan kesehatan tubuh serta pikiran. Manfaat dari body massage antara lain, mengatasi depresi dan Anxiety Syndrome, mengatur tekanan darah supaya lebih baik, meningkatkan sistem imun dalam tubuh, membuat tidur lebih nyenyak, serta membantu kinerja jantung untuk memperlancar aliran darah.''',"Start Form Rp200.000,00"),
-    treatments("Waxing ","assets/waxing.png",'''Waxing merupakan proses semi permanen untuk menghilangkan rambut halus dari akar dan dilakukan untuk menghilangkan rambut yang tidak diinginkan dari hampir semua bagian tubuh termasuk alis, wajah, kaki, lengan, punggung, perut, kaki dan area kemaluan. Manfaat dari waxing adalah bulu lebih lambat tumbuh, angkat sel kulit mati, atasi kulit kusam, dan ubah tekstur rambut.''',"Start Form Rp100.000,00"),
-    treatments("Aromatherapy ","assets/aromatherapy.png",'''Aromaterapi adalah salah satu pengobatan alternatif yang ditawarkan di Spa untuk mengubah suasana hati dan juga untuk kesehatan fisik yang biasanya melibatkan penggunaan minyak aromaterapi yang berasal dari tanaman. Beberapa manfaat dari Aromatherapy untuk menunjang kesehatan tubuh antara lain, relaksasi, membuat tidur lebih berkualitas, obat gangguan pernapasan, meredakan peradangan dan nyeri, serta mengurangi mual.''',"Start Form Rp275.000,00"),
-    treatments("Manicure and Pedicure ","assets/manicure-padicure.png",'''Manicure adalah rangkaian perawatan kuku dan jari tangan serta kulit di sekitarnya. Sementara pedicure adalah perawatan untuk kuku dan jari kaki. Biasanya, rangkaian perawatan ini dilakukan sebelum melakukan nail art atau sekadar mengoleskan kuteks kuku. Tujuannya untuk membentuk kuku-kuku jari lebih cantik saat diaplikasikan kuteks maupun nail art. Manfaat Manicure dan Pedicure untuk Kesehatan ialah mengatasi kulit pecah-pecah, melembapkan kulit, meningkatkan sirkulasi darah, bermanfaat untuk persendian, terbebas dari infeksi jamur, dan sarana relaksasi.''',"Start Form Rp150.000,00"),
-    treatments("Nail Care Treatment ","assets/nail-care.png",'''Nail care treatment adalah perawatan kuku khusus yang ditawarkan oleh spa kami. Kuku sudah menjadi salah satu bagian tubuh terpenting dalam mendukung penampilan saat ini. Perawatan kuku meliputi beberapa proses seperti pemangkasan, pelembab, perawatan, perawatan kutikula, pengaplikasian cat kuku dan berbagai terapi lainnya. Manfaat Nail Care untuk Kesehatan adalah merawat kutikula, merapikan kuku, merawat kulit kering di tangan dan kaki, mengangkat sel kulit mati, mengatasi berbagai keluhan di tangan dan kaki, dan juga memberikan efek relaksasi.''',"Start Form Rp150.000,00"),
-    treatments("Hair Spa and Hair Mask ", "assets/hair-spa.png",'''Hair spa and hair mask adalah perawatan rambut yang ditawarkan oleh spa kami. Hair Spa dan Hair Mask yang ditawarkan di Day Spa ini dapat menghilangkan stres di kulit kepala, pijat bahu dan menutrisi serta memperbaiki masalah-masalah yang dialami pada rambut dan kulit kepala. Manfaat Hair Spa and Hair Mask antara lain melembapkan rambut dan kulit kepala, mengurangi ketombe, mengatur produksi sebum pada kulit kepala, mengatasi penyumbatan pori-pori kulit kepala, meningkatkan sirkulasi darah pada kulit kepala, menebalkan rambut, dan memberi efek relaksasi.''',"Start Form Rp60.000,00"),
-  ];
+  String description_tratments = '';
+  String price = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getDetailsTreatment(widget.treatment.treatment_name);
+  }
+
+  Future<void> getDetailsTreatment(String treatment_name) async {
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+    .collection("treatments")
+    .where("treatment_name", isEqualTo: treatment_name)
+    .limit(1)
+    .get();
+
+    if (snapshot.size > 0) {
+      final DocumentSnapshot document = snapshot.docs[0];
+      setState(() {
+        description_tratments = document.get("description_treatments");
+        price = document.get("price");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var widthScreen = MediaQuery.of(context).size.width;
@@ -86,7 +82,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                       ),
                     ),
                     Text(
-                      widget.treatment_name,
+                      widget.treatment.treatment_name,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
@@ -94,7 +90,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                 Container(
                   alignment: Alignment.topCenter,
                   child: CircleAvatar(
-                    backgroundImage: AssetImage(widget.pngSrc),
+                    backgroundImage: AssetImage(widget.treatment.pngSrc),
                     radius: 100,
                   ),
                 ),
@@ -106,7 +102,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                   margin: const EdgeInsets.only(
                       left: 20, right: 20, bottom: 5, top: 5),
                   child: Text(
-                    widget.description_tratments,
+                    '$description_tratments',
                     maxLines: 20,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -120,7 +116,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                   margin: const EdgeInsets.only(
                       left: 20, right: 20, bottom: 5, top: 5),
                   child: Text(
-                    widget.price,
+                    'Price: Rp$price',
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -160,7 +156,10 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_){
-                              return BookingPage();
+                              return BookingPage(
+                                treatment: widget.treatment,
+                                // price: price
+                              );
                             })
                           );
                         },
@@ -176,3 +175,5 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
     );
   }
 }
+
+

@@ -1,4 +1,4 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,9 +17,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final currentIndex = 3;
   late DocumentSnapshot _userData;
   late User _currentUser;
-  late String _gender;
+  // late String _gender;
   String? _selectedGender;
-  late Stream<QuerySnapshot> _dataStream;
+  // late Stream<QuerySnapshot> _dataStream;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   // controller

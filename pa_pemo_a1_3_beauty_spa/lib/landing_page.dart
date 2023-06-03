@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/login_fix.dart';
-import 'package:pa_pemo_a1_3_beauty_spa/main.dart';
 
 class landingPage extends StatelessWidget {
   const landingPage({super.key});

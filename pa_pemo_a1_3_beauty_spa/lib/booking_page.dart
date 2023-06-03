@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'home_page.dart';
 import 'dialog.dart';
 
-class BookingController {
-  final TextEditingController treatmentController = TextEditingController();
+class BookingPage extends StatefulWidget {
+  final Treatments treatment;
+  BookingPage({required this.treatment});
+
+  @override
+  State<BookingPage> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends State<BookingPage> {
+  final TextEditingController treatmentNameController = TextEditingController();
   final TextEditingController tanggalController = TextEditingController();
-  // final TextEditingController jamController = TextEditingController();
   String? _selectedTime;
-
+  
   List<String> jamTreatment = <String>[
-      "07.00-10.00",
-      "09.00-12.00",
-      "13.00-15.00",
-      "15.00-17.00",
-      "19.00-21.00"
-    ];
+    "07.00-10.00",
+    "09.00-12.00",
+    "13.00-15.00",
+    "15.00-17.00",
+    "19.00-21.00"
+  ];
 
-  // Menambahkan data pesanan ke Firestore
-  void addOrderToFirestore(BuildContext context) async {
-    String nama_treatment = treatmentController.text;
-    String tgl = tanggalController.text.trim();
-    String? jam = _selectedTime;
+void saveScheduleToFirestore() {
+  String treatment_name = widget.treatment.treatment_name;
+  String tgl = tanggalController.text.trim();
+  String? jam = _selectedTime;
 
-    
-    // Mengambil email pengguna yang sudah login
+  // Mengambil email pengguna yang sudah login
     User? user = FirebaseAuth.instance.currentUser;
     String? userEmail;
 
@@ -41,77 +43,23 @@ class BookingController {
       return;
     }
 
-    try {
-      await FirebaseFirestore.instance.collection('schedule').add({
-        'nama_treatment': nama_treatment,
-        'date': tgl,
-        'time': jam,
-        'email': userEmail,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('Pesanan berhasil ditambahkan ke Firestore.')),
-      // );
-      Navigator.pop(context);
-    } catch (e) {
-      print(e);
-      Navigator.pop(context);
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('Gagal menambahkan pesanan ke Firestore: $error')),
-      // );
-    }
-  }
+  FirebaseFirestore.instance.collection("schedule").add({
+    'treatment_name': treatment_name,
+    'date': tgl,
+    'time': jam,
+    'email': userEmail,
+    'timestamp': FieldValue.serverTimestamp(),
+  }).then((value) {
+    print('Data pesanan berhasil ditambahkan ke Firestore.');
+  }).catchError((error) {
+    print('Gagal menambahkan data pesanan ke Firestore: $error');
+  });
 }
-
-class BookingPage extends StatefulWidget {
-  // final String treatment_name;
-  // final String pngSrc;
-  // final String description_tratments;
-  // final String price;
-  // BookingPage(
-  //     {Key? key,
-  //     required this.treatment_name,
-  //     required this.pngSrc,
-  //     required this.description_tratments,
-  //     required this.price})
-  //     : super(key: key);
-
-  @override
-  State<BookingPage> createState() => _BookingPageState();
-}
-
-class _BookingPageState extends State<BookingPage> {
-  final BookingController _bookingController = BookingController();
-//   TextEditingController treatmentController = TextEditingController();
-//   TextEditingController tanggalController = TextEditingController();
-//   TextEditingController jamController = TextEditingController();
-//   String _errorMessage = '';
-//   String? _selectedTime;
-
-//   bool? data = false;
-
-//   String dropdownValue = list.first;
-
-//   void addOrderToFirestore(String nama_treatment, String tgl, String jam, String email) {
-//   FirebaseFirestore.instance.collection('schedule').add({
-//     'nama_treatment': nama_treatment,
-//     'tgl': tgl,
-//     'jam': jam,
-//     'email': email,
-//     'timestamp': FieldValue.serverTimestamp(),
-//   }).then((value) {
-//     print('Data pesanan berhasil ditambahkan ke Firestore.');
-//   }).catchError((error) {
-//     print('Gagal menambahkan data pesanan ke Firestore: $error');
-//   });
-// }
 
   @override
   Widget build(BuildContext context) {
     var widthScreen = MediaQuery.of(context).size.width;
     var heightScreen = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: Container(
         alignment: Alignment.topCenter,
@@ -183,7 +131,7 @@ class _BookingPageState extends State<BookingPage> {
                   Container(
                     width: widthScreen / 1.3,
                     child: TextFormField(
-                      controller: _bookingController.treatmentController,
+                      controller: treatmentNameController,
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                         enabledBorder: const OutlineInputBorder(
@@ -198,16 +146,9 @@ class _BookingPageState extends State<BookingPage> {
                           borderRadius: BorderRadius.all(Radius.circular(100)),
                         ),
                         labelStyle: Theme.of(context).textTheme.bodySmall,
-                        labelText: "Treatment",
-                        // labelText: widget.treatment_name,
+                        labelText: "${widget.treatment.treatment_name}",
                         icon: const Icon(Icons.person_outline),
                       ),
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return 'Please input your name';
-                      //   }
-                      //   return null;
-                      // },
                       readOnly: true,
                     ),
                   ),
@@ -217,7 +158,7 @@ class _BookingPageState extends State<BookingPage> {
                   Container(
                     width: widthScreen / 1.3,
                     child: TextFormField(
-                      controller: _bookingController.tanggalController,
+                      controller: tanggalController,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                         enabledBorder: const OutlineInputBorder(
@@ -268,17 +209,17 @@ class _BookingPageState extends State<BookingPage> {
                                 BorderRadius.all(Radius.circular(5.0)),
                           ),
                           child: DropdownButton<String>(
-                            value: _bookingController._selectedTime,
+                            value: _selectedTime,
                             icon: const Icon(Icons.arrow_drop_down),
                             elevation: 16,
                             style: TextStyle(color: Colors.black),
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                _bookingController._selectedTime = value!;
+                                _selectedTime = value!;
                               });
                             },
-                            items: _bookingController.jamTreatment.map<DropdownMenuItem<String>>((String value) {
+                            items: jamTreatment.map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -307,9 +248,10 @@ class _BookingPageState extends State<BookingPage> {
                         ]),
                     child: TextButton(
                       onPressed: () {
+                        
                         CustomAlertBooking(context,
                             "Are you sure you want to booking this treatment?");
-                        _bookingController.addOrderToFirestore(context);
+                        saveScheduleToFirestore();
                       },
                       child: const Text(
                         "Submit",

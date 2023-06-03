@@ -1,160 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserBookedPage extends StatefulWidget {
-  final User user;
-  const UserBookedPage({super.key, required this.user});
-
   @override
-  State<UserBookedPage> createState() => _UserBookedPageState();
+  _UserBookedPageState createState() => _UserBookedPageState();
 }
 
 class _UserBookedPageState extends State<UserBookedPage> {
-  late DocumentSnapshot _userData;
-  late User _currentUser;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  // controller
-  final TextEditingController _emailController = TextEditingController();
+  late User _user;
 
+  @override
   void initState() {
     super.initState();
-    _getCurrentUser();
+    _user = _auth.currentUser!;
   }
-
-  Future<void> _getCurrentUser() async {
-    final User? user = _auth.currentUser;
-    if (user != null) {
-      setState(() {
-        _currentUser = user;
-      });
-      await _getUserData();
-    }
-  }
-
-  Future<void> _getUserData() async {
-    final QuerySnapshot snapshot = await _db
-        .collection('users')
-        .where('email', isEqualTo: _currentUser.email)
-        .limit(1)
-        .get();
-    if (snapshot.docs.isNotEmpty) {
-      // final userData = userSnapshot.docs.first.data();
-      setState(() {
-        _userData = snapshot.docs.first;
-        _emailController.text = _userData['email'];
-      });
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
     var widthScreen = MediaQuery.of(context).size.width;
     var heightScreen = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: Container(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.topLeft,
         height: heightScreen,
-        width: widthScreen,
-        padding: const EdgeInsets.all(30),
-        child: ListView(
+        width: widthScreen / 1.1,
+        margin: EdgeInsets.only(left: 18, top: 50, bottom: 40),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(200),
+            topRight: Radius.circular(200)
+          ),
+          color: Color.fromARGB(255, 255, 183, 213),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              alignment: Alignment.topLeft,
-              height: heightScreen,
-              width: widthScreen / 1.5,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(200)),
-                color: Color.fromARGB(255, 255, 183, 213),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(
-                        Icons.spa,
-                        color: Color.fromRGBO(253, 80, 146, 1),
-                        size: 40,
-                      ),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: const CircleAvatar(
-                          backgroundImage:
-                              AssetImage("assets/beauty_spa_logo2.png"),
-                          radius: 50,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.spa,
-                        color: Color.fromRGBO(253, 80, 146, 1),
-                        size: 40,
-                      ),
-                    ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Icon(
+                  Icons.spa,
+                    color: Color.fromRGBO(253, 80, 146, 1),
+                    size: 40,
+                ),
+                Container(
+                  alignment: Alignment.topCenter,
+                  child: const CircleAvatar(
+                    backgroundImage:
+                      AssetImage("assets/beauty_spa_logo2.png"),
+                      radius: 50,
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text("Your Schedule",
-                      style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: widthScreen / 1.3,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(width: 3, color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 2, top: 3),
-                          child: Text(
-                            'Nama treatment',
-                            maxLines: 10,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                ),
+                const Icon(
+                  Icons.spa,
+                  color: Color.fromRGBO(253, 80, 146, 1),
+                  size: 40,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text("Your Schedule",
+              style: Theme.of(context).textTheme.titleSmall),
+            SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('schedule')
+                    .where('email', isEqualTo: _user.email)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+
+                  if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                    return Text('No data available');
+                  }
+
+                  return Column(
+                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+                      String treatmentName = data['treatment_name'];
+                      String tgl = data['date'];
+                      String jam = data['time'];
+
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.topLeft,
+                        width: widthScreen / 1.3,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 3, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 2, top: 3),
-                          child: Text(
-                            'Tanggal',
-                            maxLines: 5,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                        child: Column(
+                          children: [
+                            Text('Treatment Name: $treatmentName'),
+                            Text('Tanggal: $tgl'),
+                            Text('Jam: $jam')
+                          ],
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 2, top: 3),
-                          child: Text(
-                            'Jam',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                      );
+                    }).toList(),
+                  );
+                },
               ),
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }
+

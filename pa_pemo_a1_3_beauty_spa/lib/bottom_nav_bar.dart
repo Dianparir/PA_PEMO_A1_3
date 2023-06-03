@@ -25,9 +25,7 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
     _getCurrentUser();
     pages = [
       HomePage(),
-      UserBookedPage(user: _currentUser!),
-      // BookingPage(),
-      // DetailTreatmentPage2(),
+      UserBookedPage(),
       ProfilePage(user: _currentUser!),
     ];
     _animationController = AnimationController(
@@ -38,7 +36,7 @@ class _BottomNavItemState extends State<BottomNavItem> with TickerProviderStateM
       });
 
     animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-        parent: _animationController, curve: Curves.fastOutSlowIn));
+      parent: _animationController, curve: Curves.fastOutSlowIn));
     super.initState();
   }
 
