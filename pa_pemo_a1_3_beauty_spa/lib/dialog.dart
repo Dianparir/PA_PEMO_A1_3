@@ -1,6 +1,5 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/bottom_nav_bar.dart';
 
 Future<dynamic> CustomAlert(BuildContext context, String pesan) {
   return showDialog(
@@ -36,7 +35,7 @@ Future<dynamic> CustomAlert(BuildContext context, String pesan) {
       });
 }
 
-Future<dynamic> CustomAlertBooking(BuildContext context, String pesan) {
+Future<dynamic> CustomAlertBooking(BuildContext context, String pesan, Null Function() param2) {
   return showDialog(
       context: context,
       builder: (context) {
@@ -57,7 +56,16 @@ Future<dynamic> CustomAlertBooking(BuildContext context, String pesan) {
                 child:
                     Text("No", style: Theme.of(context).textTheme.bodySmall)),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (_) {
+                    return BottomNavItem();
+                }));
+                // Navigator.of(context).pop();
+                if (param2 != null) {
+                  param2();
+                }
+              },
               child: Text(
                 "Yes",
                 style: Theme.of(context).textTheme.bodySmall,
@@ -67,3 +75,5 @@ Future<dynamic> CustomAlertBooking(BuildContext context, String pesan) {
         );
       });
 }
+
+

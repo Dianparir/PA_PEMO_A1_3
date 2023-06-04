@@ -82,9 +82,9 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Center(
-              child: Text('Error Message'),
+              child: Text('Error Message', style: Theme.of(context).textTheme.bodyLarge),
             ),
-            content: Text("Your Account Is Not Registered"),
+            content: Text("Your Account Is Not Registered", style: Theme.of(context).textTheme.bodySmall),
             actions: [
               TextButton(
                 onPressed: () {

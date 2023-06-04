@@ -57,8 +57,8 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Sign Up Successful'),
-            content: Text('Registration successful. Please login.'),
+            title: Text('Sign Up Successful', style: Theme.of(context).textTheme.bodyLarge),
+            content: Text('Registration successful. Please login.', style: Theme.of(context).textTheme.bodyMedium),
             actions: [
               TextButton(
                 onPressed: () {
@@ -71,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }),
                   );
                 },
-                child: Text('OK'),
+                child: Text('OK', style: Theme.of(context).textTheme.bodySmall),
               ),
             ],
           );
@@ -147,7 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     labelText: 'Birth',
-                    icon: Icon(Icons.calendar_today),
+                    // icon: Icon(Icons.calendar_today),
                   ),
                   readOnly:
                       true, //set it true, so that user will not able to edit text

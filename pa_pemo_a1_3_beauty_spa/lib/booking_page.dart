@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/treatment.dart';
-import 'home_page.dart';
+// import 'home_page.dart';
 import 'dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -32,7 +32,6 @@ class _BookingPageState extends State<BookingPage> {
     String treatment_name = widget.treatment.treatment_name;
     int treatment_price = widget.treatment.price;
     String tgl = _datecontroller.text;
-
     String? jam = _selectedTime;
 
     // Mengambil email pengguna yang sudah login
@@ -165,30 +164,23 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                   Container(
                     width: widthScreen / 1.3,
-                    child: TextField(
-                        // controller: tanggalController,
-                        // keyboardType: TextInputType.datetime,
-                        // decoration: InputDecoration(
-                        //   enabledBorder: const OutlineInputBorder(
-                        //     borderSide: BorderSide(
-                        //         color: Color.fromARGB(255, 184, 35, 73)),
-                        //   ),
-                        //   focusedBorder: OutlineInputBorder(
-                        //       borderRadius: BorderRadius.circular(100),
-                        //       borderSide: const BorderSide(
-                        //           color: Color.fromARGB(255, 184, 35, 73))),
-                        //   border: const OutlineInputBorder(
-                        //     borderRadius: BorderRadius.all(Radius.circular(100)),
-                        //   ),
-                        //   labelStyle: Theme.of(context).textTheme.bodySmall,
-                        //   labelText: 'Date',
-                        //   icon: const Icon(Icons.today),
-                        // ),
+                    child: TextFormField(
                         controller: _datecontroller,
-                        // keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
-                          labelText: 'Birth',
-                          icon: Icon(Icons.calendar_today),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 184, 35, 73)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 184, 35, 73))),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(100)),
+                          ),
+                          labelStyle: Theme.of(context).textTheme.bodyMedium,
+                          labelText: 'Date',
+                          icon: Icon(Icons.today),
                         ),
                         readOnly:
                             true, //set it true, so that user will not able to edit text
@@ -284,8 +276,11 @@ class _BookingPageState extends State<BookingPage> {
                     child: TextButton(
                       onPressed: () {
                         CustomAlertBooking(context,
-                            "Are you sure you want to booking this treatment?");
-                        saveScheduleToFirestore();
+                          "Are you sure you want to booking this treatment?",
+                          () {
+                            saveScheduleToFirestore();
+                          }
+                        );
                       },
                       child: const Text(
                         "Submit",

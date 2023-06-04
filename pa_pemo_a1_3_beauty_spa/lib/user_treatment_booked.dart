@@ -27,12 +27,13 @@ class _UserBookedPageState extends State<UserBookedPage> {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
     return Scaffold(
-        body: ListView(children: [
+      body: ListView(children: [
       Container(
-        alignment: Alignment.topLeft,
+        alignment: Alignment.topCenter,
         height: heightScreen,
-        width: widthScreen / 1.1,
-        margin: EdgeInsets.only(left: 18, top: 50, bottom: 40),
+        width: widthScreen / 1.5,
+        padding: EdgeInsets.all(30),
+        margin: EdgeInsets.only(left: widthScreen/16, right: widthScreen/16),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(200), topRight: Radius.circular(200)),
@@ -135,10 +136,13 @@ class _UserBookedPageState extends State<UserBookedPage> {
                         }).toList(),
                       ),
                     ),
-                    Text(
-                      "Total : $total".toString(),
-                      style: Theme.of(context).textTheme.titleSmall,
-                      textAlign: TextAlign.center,
+                    Container(
+                      margin: EdgeInsets.only(bottom: 110),
+                      child: Text(
+                        "Total : $total".toString(),
+                        style: Theme.of(context).textTheme.titleSmall,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ]);
                 },

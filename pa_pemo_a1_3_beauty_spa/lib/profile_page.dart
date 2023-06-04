@@ -165,10 +165,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 width: size.width - 2,
                 // height: size.height - 2,
                 margin: EdgeInsets.only(
-                    left: 15.0,
-                    right: 15.0,
-                    top: 40.0,
-                    bottom: size.height * 0.6),
+                  left: 15.0,
+                  right: 15.0,
+                  // top: 40.0,
+                  bottom: size.height * 0.6
+                ),
                 decoration: BoxDecoration(
                     color: Color.fromARGB(87, 207, 186, 188),
                     borderRadius: BorderRadius.circular(20.0)),
@@ -176,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(
-                          top: size.height * 0.10, left: size.width * 0.79),
+                        top: size.height * 0.10, left: size.width * 0.79),
                       child: CircleAvatar(
                         backgroundColor: Colors.white54,
                         radius: 70,
@@ -210,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Ink(
                             child: Container(
                               margin: EdgeInsets.only(
-                                  left: 15.0, top: size.height * 0.02),
+                              left: 15.0, top: size.height * 0.02),
                               width: 35.0,
                               height: 35.0,
                               decoration: BoxDecoration(
@@ -244,7 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Container(
                             alignment: Alignment.topRight,
                             margin: EdgeInsets.only(
-                                right: 15.0, top: size.height * 0.02),
+                            right: 15.0, top: size.height * 0.02),
                             width: 35.0,
                             height: 35.0,
                             decoration: BoxDecoration(
@@ -303,6 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                   ),
+                  readOnly: true,
                 ),
               ),
               Container(
@@ -315,6 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                   ),
+                  readOnly: true,
                 ),
               ),
               // SizedBox(
@@ -386,10 +389,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             subtitle: TextField(
                                 controller: _birthController,
-                                // keyboardType: TextInputType.datetime,
-
-                                readOnly:
-                                    true, //set it true, so that user will not able to edit text
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                                readOnly: true, //set it true, so that user will not able to edit text
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
