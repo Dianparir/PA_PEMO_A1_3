@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/booking_page.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/home_page.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/treatment.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/treatment_provider.dart';
+import 'package:provider/provider.dart';
 
 class DetailTreatments extends StatefulWidget {
   final Treatments treatment;
-  DetailTreatments(
-    {Key? key, required this.treatment}) : super(key: key);
+  DetailTreatments({Key? key, required this.treatment}) : super(key: key);
 
   @override
   State<DetailTreatments> createState() => _DetailTreatmentsState();
@@ -24,10 +26,10 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
 
   Future<void> getDetailsTreatment(String treatment_name) async {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
-    .collection("treatments")
-    .where("treatment_name", isEqualTo: treatment_name)
-    .limit(1)
-    .get();
+        .collection("treatments")
+        .where("treatment_name", isEqualTo: treatment_name)
+        .limit(1)
+        .get();
 
     if (snapshot.size > 0) {
       final DocumentSnapshot document = snapshot.docs[0];
@@ -42,6 +44,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
   Widget build(BuildContext context) {
     var widthScreen = MediaQuery.of(context).size.width;
     var heightScreen = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         alignment: Alignment.topCenter,
@@ -153,15 +156,13 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                         color: Colors.white,
                         iconSize: 20,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_){
-                              return BookingPage(
-                                treatment: widget.treatment,
-                                // price: price
-                              );
-                            })
-                          );
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
+                            return BookingPage(
+                              treatment: widget.treatment,
+                              // price: price
+                            );
+                          }));
                         },
                       ),
                     ),
@@ -175,5 +176,3 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
     );
   }
 }
-
-
