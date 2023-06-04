@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pa_pemo_a1_3_beauty_spa/treatment.dart';
 import 'home_page.dart';
 import 'dialog.dart';
+import 'package:intl/intl.dart';
 
 class BookingPage extends StatefulWidget {
   final Treatments treatment;
@@ -15,8 +17,9 @@ class BookingPage extends StatefulWidget {
 class _BookingPageState extends State<BookingPage> {
   final TextEditingController treatmentNameController = TextEditingController();
   final TextEditingController tanggalController = TextEditingController();
+  final TextEditingController _datecontroller = TextEditingController();
   String? _selectedTime;
-  
+
   List<String> jamTreatment = <String>[
     "07.00-10.00",
     "09.00-12.00",
@@ -25,12 +28,14 @@ class _BookingPageState extends State<BookingPage> {
     "19.00-21.00"
   ];
 
-void saveScheduleToFirestore() {
-  String treatment_name = widget.treatment.treatment_name;
-  String tgl = tanggalController.text.trim();
-  String? jam = _selectedTime;
+  void saveScheduleToFirestore() {
+    String treatment_name = widget.treatment.treatment_name;
+    int treatment_price = widget.treatment.price;
+    String tgl = _datecontroller.text;
 
-  // Mengambil email pengguna yang sudah login
+    String? jam = _selectedTime;
+
+    // Mengambil email pengguna yang sudah login
     User? user = FirebaseAuth.instance.currentUser;
     String? userEmail;
 
@@ -38,23 +43,26 @@ void saveScheduleToFirestore() {
       userEmail = user.email;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Tidak dapat menambahkan pesanan karena tidak ada pengguna yang sudah login.')),
+        SnackBar(
+            content: Text(
+                'Tidak dapat menambahkan pesanan karena tidak ada pengguna yang sudah login.')),
       );
       return;
     }
 
-  FirebaseFirestore.instance.collection("schedule").add({
-    'treatment_name': treatment_name,
-    'date': tgl,
-    'time': jam,
-    'email': userEmail,
-    'timestamp': FieldValue.serverTimestamp(),
-  }).then((value) {
-    print('Data pesanan berhasil ditambahkan ke Firestore.');
-  }).catchError((error) {
-    print('Gagal menambahkan data pesanan ke Firestore: $error');
-  });
-}
+    FirebaseFirestore.instance.collection("schedule").add({
+      'treatment_name': treatment_name,
+      'harga': treatment_price,
+      'date': tgl,
+      'time': jam,
+      'email': userEmail,
+      'timestamp': FieldValue.serverTimestamp(),
+    }).then((value) {
+      print('Data pesanan berhasil ditambahkan ke Firestore.');
+    }).catchError((error) {
+      print('Gagal menambahkan data pesanan ke Firestore: $error');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,32 +165,58 @@ void saveScheduleToFirestore() {
                   ),
                   Container(
                     width: widthScreen / 1.3,
-                    child: TextFormField(
-                      controller: tanggalController,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 184, 35, 73)),
+                    child: TextField(
+                        // controller: tanggalController,
+                        // keyboardType: TextInputType.datetime,
+                        // decoration: InputDecoration(
+                        //   enabledBorder: const OutlineInputBorder(
+                        //     borderSide: BorderSide(
+                        //         color: Color.fromARGB(255, 184, 35, 73)),
+                        //   ),
+                        //   focusedBorder: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(100),
+                        //       borderSide: const BorderSide(
+                        //           color: Color.fromARGB(255, 184, 35, 73))),
+                        //   border: const OutlineInputBorder(
+                        //     borderRadius: BorderRadius.all(Radius.circular(100)),
+                        //   ),
+                        //   labelStyle: Theme.of(context).textTheme.bodySmall,
+                        //   labelText: 'Date',
+                        //   icon: const Icon(Icons.today),
+                        // ),
+                        controller: _datecontroller,
+                        // keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          labelText: 'Birth',
+                          icon: Icon(Icons.calendar_today),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 184, 35, 73))),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                        ),
-                        labelStyle: Theme.of(context).textTheme.bodySmall,
-                        labelText: 'Date',
-                        icon: const Icon(Icons.today),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'please select a date';
-                        }
-                        return null;
-                      },
-                    ),
+                        readOnly:
+                            true, //set it true, so that user will not able to edit text
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(
+                                  2000), //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime(2101));
+
+                          if (pickedDate != null) {
+                            print(
+                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                            print(
+                                formattedDate); //formatted date output using intl package =>  2021-03-16
+                            //you can implement different kind of Date Format here according to your requirement
+
+                            setState(() {
+                              _datecontroller.text =
+                                  formattedDate; //set output date to TextField value.
+                            });
+                          } else {
+                            print("Date is not selected");
+                          }
+                        }),
                   ),
                   const SizedBox(
                     height: 35,
@@ -219,7 +253,8 @@ void saveScheduleToFirestore() {
                                 _selectedTime = value!;
                               });
                             },
-                            items: jamTreatment.map<DropdownMenuItem<String>>((String value) {
+                            items: jamTreatment
+                                .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -248,7 +283,6 @@ void saveScheduleToFirestore() {
                         ]),
                     child: TextButton(
                       onPressed: () {
-                        
                         CustomAlertBooking(context,
                             "Are you sure you want to booking this treatment?");
                         saveScheduleToFirestore();

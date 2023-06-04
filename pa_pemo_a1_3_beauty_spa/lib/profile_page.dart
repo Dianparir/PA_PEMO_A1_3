@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/bottom_nav_bar.dart';
 import 'package:pa_pemo_a1_3_beauty_spa/login_fix.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -68,14 +69,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _updateUserData(String field, String newValue) async {
     final userRef = _db.collection('users').doc(_currentUser.uid);
-    if(widget.user != null) {
+    if (widget.user != null) {
       await userRef.update({
         field: newValue,
       });
     }
   }
 
-  void _showEditDialog(BuildContext context, String field, String currentValue) {
+  void _showEditDialog(
+      BuildContext context, String field, String currentValue) {
     TextEditingController _textEditingController = TextEditingController();
     _textEditingController.text = currentValue;
     showDialog(
@@ -121,7 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         _updateUserData(field, newValue);
                         // Navigator.of(context).pop();
                         // Navigator.pop(context);
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) {
                           return BottomNavItem();
                           // return ProfilePage(user: _currentUser);
                         }));
@@ -134,7 +137,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-            
           ],
         );
       },
@@ -156,85 +158,93 @@ class _ProfilePageState extends State<ProfilePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Color.fromARGB(255, 254, 254, 254),
-        body: Stack(
-          children: [
-            Container(
-              width: size.width - 2,
-              // height: size.height - 2,
-              margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 40.0, bottom: size.height * 0.6),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(87, 207, 186, 188),
-                borderRadius: BorderRadius.circular(20.0)
-              ),
-              child: Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: size.height * 0.10, left: size.width * 0.79),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white54,
-                      radius: 70,
+        body: ListView(children: [
+          Stack(
+            children: [
+              Container(
+                width: size.width - 2,
+                // height: size.height - 2,
+                margin: EdgeInsets.only(
+                    left: 15.0,
+                    right: 15.0,
+                    top: 40.0,
+                    bottom: size.height * 0.6),
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(87, 207, 186, 188),
+                    borderRadius: BorderRadius.circular(20.0)),
+                child: Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: size.height * 0.10, left: size.width * 0.79),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white54,
+                        radius: 70,
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 150,
-                    height: 150,
-                    margin: EdgeInsets.only(top: 70.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(500)),
-                      color: Colors.white54,
+                    Container(
+                      width: 150,
+                      height: 150,
+                      margin: EdgeInsets.only(top: 70.0),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.only(topRight: Radius.circular(500)),
+                        color: Colors.white54,
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 120,
-                    height: 60,
-                    margin: EdgeInsets.only(left: size.width * 0.54),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(200), bottomRight: Radius.circular(200)),
-                      color: Colors.white54,
+                    Container(
+                      width: 120,
+                      height: 60,
+                      margin: EdgeInsets.only(left: size.width * 0.54),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(200),
+                            bottomRight: Radius.circular(200)),
+                        color: Colors.white54,
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Ink(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 15.0, top: size.height * 0.02),
-                            width: 35.0,
-                            height: 35.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromARGB(207, 93, 79, 79)
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios_new, 
-                                size: 14,
-                                color: Colors.white,
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Ink(
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.0, top: size.height * 0.02),
+                              width: 35.0,
+                              height: 35.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromARGB(207, 93, 79, 79)),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 14,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return BottomNavItem();
+                                  }));
+                                },
                               ),
-                              onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_){
-                                  return BottomNavItem();
-                                }));
-                              },
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: size.height * 0.02),
-                          child: Text(
-                            "Profile",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 182, 62, 62)
+                          Container(
+                            margin: EdgeInsets.only(top: size.height * 0.02),
+                            child: Text(
+                              "Profile",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 182, 62, 62)),
                             ),
                           ),
-                        ),
-                        Ink(
-                          child: Container(
+                          Container(
                             alignment: Alignment.topRight,
-                            margin: EdgeInsets.only(right: 15.0, top: size.height * 0.02),
+                            margin: EdgeInsets.only(
+                                right: 15.0, top: size.height * 0.02),
                             width: 35.0,
                             height: 35.0,
                             decoration: BoxDecoration(
@@ -242,238 +252,249 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Color.fromARGB(207, 93, 79, 79),
                             ),
                             child: IconButton(
-                              onPressed: () async {
-                                await _auth.signOut();
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => LoginPage()),
-                                );
-                              },
                               icon: Icon(
                                 Icons.logout,
                                 size: 14,
                                 color: Colors.white,
                               ),
+                              onPressed: () async {
+                                await _auth.signOut();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
+                                );
+                              },
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(top: size.height * 0.22),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 60,
+              Container(
+                alignment: Alignment.topCenter,
+                margin: EdgeInsets.only(top: size.height * 0.22),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 60,
+                ),
               ),
-            ),
-            Expanded(
-              child: Container(
+              Expanded(
+                  child: Container(
                 alignment: Alignment.topCenter,
                 margin: EdgeInsets.only(top: size.height * 0.23),
                 child: CircleAvatar(
                   backgroundImage: AssetImage(_getProfileImage()),
                   radius: 50,
                 ),
-              )
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(top: size.height * 0.36),
-              child: TextField(
-                controller: _nameController,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20
-                ),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(top: size.height * 0.40),
-              child: TextField(
-                controller: _emailController,
-                style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14
-                ),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.45),
-                  child: Column(
-                    children: [
-                       Card(
-                        child: ListTile(
-                          // leading: Icon(Icons.account_circle),
-                          trailing: IconButton(
-                            icon: Icon(Icons.account_circle,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: () {
-                              _showEditDialog(context, 'name', _userData['name']);
-                            },
-                          ),
-                          title: Text(
-                            "Username:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          trailing: IconButton(
-                            icon: Icon(Icons.email_outlined,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: (){},
-                          ),
-                          title: Text(
-                            "Email:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          trailing: IconButton(
-                            icon: Icon(Icons.calendar_month_sharp,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: () {
-                              _showEditDialog(context, 'birth', _userData['birth']);
-                            },
-                          ),
-                          title: Text(
-                            "Birth:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _birthController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          trailing: IconButton(
-                            icon: Icon(Icons.person_2,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: () {},
-                          ),
-                          title: Text(
-                            "Gender:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _genderController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          trailing: IconButton(
-                            icon: Icon(Icons.phone_outlined,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: (){
-                              _showEditDialog(context, 'phone_number', _userData['phone_number']);
-                            },
-                          ),
-                          title: Text(
-                            "Phone Number:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _phoneController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          trailing: IconButton(
-                            icon: Icon(Icons.key_sharp,
-                            color: Color.fromARGB(178, 182, 62, 62)),
-                            onPressed: () {
-                              _showEditDialog(context, 'password', _userData['password']);
-                            },
-                          ),
-                          title: Text(
-                            "Password:",
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          subtitle: TextFormField(
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            readOnly: true,
-                          ),
-                        ),
-                      )
-                    ],
+              )),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: size.height * 0.36),
+                child: TextField(
+                  controller: _nameController,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
-            )
-          ],
-        ),
+              ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: size.height * 0.40),
+                child: TextField(
+                  controller: _emailController,
+                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.45),
+                    child: Column(
+                      children: [
+                        Card(
+                          child: ListTile(
+                            // leading: Icon(Icons.account_circle),
+                            trailing: IconButton(
+                              icon: Icon(Icons.account_circle,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {
+                                _showEditDialog(
+                                    context, 'name', _userData['name']);
+                              },
+                            ),
+                            title: Text(
+                              "Username:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.email_outlined,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {},
+                            ),
+                            title: Text(
+                              "Email:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.calendar_month_sharp,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {
+                                _showEditDialog(
+                                    context, 'birth', _userData['birth']);
+                              },
+                            ),
+                            title: Text(
+                              "Birth:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextField(
+                                controller: _birthController,
+                                // keyboardType: TextInputType.datetime,
+
+                                readOnly:
+                                    true, //set it true, so that user will not able to edit text
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(
+                                          2000), //DateTime.now() - not to allow to choose before today.
+                                      lastDate: DateTime(2101));
+
+                                  if (pickedDate != null) {
+                                    print(
+                                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickedDate);
+                                    print(
+                                        formattedDate); //formatted date output using intl package =>  2021-03-16
+                                    //you can implement different kind of Date Format here according to your requirement
+
+                                    setState(() {
+                                      _birthController.text =
+                                          formattedDate; //set output date to TextField value.
+                                    });
+                                  } else {
+                                    print("Date is not selected");
+                                  }
+                                }),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.person_2,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {},
+                            ),
+                            title: Text(
+                              "Gender:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextFormField(
+                              controller: _genderController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.phone_outlined,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {
+                                _showEditDialog(context, 'phone_number',
+                                    _userData['phone_number']);
+                              },
+                            ),
+                            title: Text(
+                              "Phone Number:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextFormField(
+                              controller: _phoneController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: IconButton(
+                              icon: Icon(Icons.key_sharp,
+                                  color: Color.fromARGB(178, 182, 62, 62)),
+                              onPressed: () {
+                                _showEditDialog(
+                                    context, 'password', _userData['password']);
+                              },
+                            ),
+                            title: Text(
+                              "Password:",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            subtitle: TextFormField(
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              )
+            ],
+          ),
+        ]),
       ),
     );
   }
