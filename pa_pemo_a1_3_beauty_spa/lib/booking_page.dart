@@ -154,7 +154,7 @@ class _BookingPageState extends State<BookingPage> {
                           borderRadius: BorderRadius.all(Radius.circular(100)),
                         ),
                         labelStyle: Theme.of(context).textTheme.bodySmall,
-                        labelText: "${widget.treatment.treatment_name}",
+                        hintText: "${widget.treatment.treatment_name}",
                         icon: const Icon(Icons.person_outline),
                       ),
                       readOnly: true,
