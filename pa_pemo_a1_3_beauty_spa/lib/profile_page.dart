@@ -121,12 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (newValue.isNotEmpty && newValue != currentValue) {
                         // Update data
                         _updateUserData(field, newValue);
-                        // Navigator.of(context).pop();
-                        // Navigator.pop(context);
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (_) {
                           return BottomNavItem();
-                          // return ProfilePage(user: _currentUser);
                         }));
                       }
                     },
@@ -331,7 +328,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         Card(
                           child: ListTile(
-                            // leading: Icon(Icons.account_circle),
                             trailing: IconButton(
                               icon: Icon(Icons.account_circle,
                                   color: Color.fromARGB(178, 182, 62, 62)),
@@ -378,10 +374,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             trailing: IconButton(
                               icon: Icon(Icons.calendar_month_sharp,
                                   color: Color.fromARGB(178, 182, 62, 62)),
-                              onPressed: () {
-                                _showEditDialog(
-                                    context, 'birth', _userData['birth']);
-                              },
+                              onPressed: () {},
                             ),
                             title: Text(
                               "Birth:",
@@ -392,33 +385,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
-                                readOnly: true, //set it true, so that user will not able to edit text
-                                onTap: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(
-                                          2000), //DateTime.now() - not to allow to choose before today.
-                                      lastDate: DateTime(2101));
-
-                                  if (pickedDate != null) {
-                                    print(
-                                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                    String formattedDate =
-                                        DateFormat('yyyy-MM-dd')
-                                            .format(pickedDate);
-                                    print(
-                                        formattedDate); //formatted date output using intl package =>  2021-03-16
-                                    //you can implement different kind of Date Format here according to your requirement
-
-                                    setState(() {
-                                      _birthController.text =
-                                          formattedDate; //set output date to TextField value.
-                                    });
-                                  } else {
-                                    print("Date is not selected");
-                                  }
-                                }),
+                                readOnly: true,
+                              ),
                           ),
                         ),
                         Card(
@@ -446,10 +414,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             trailing: IconButton(
                               icon: Icon(Icons.phone_outlined,
                                   color: Color.fromARGB(178, 182, 62, 62)),
-                              onPressed: () {
-                                _showEditDialog(context, 'phone_number',
-                                    _userData['phone_number']);
-                              },
+                              onPressed: () {},
                             ),
                             title: Text(
                               "Phone Number:",

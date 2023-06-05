@@ -20,6 +20,47 @@ class _UserBookedPageState extends State<UserBookedPage> {
     _user = _auth.currentUser!;
   }
 
+  Future<dynamic> CustomAlertDelete(BuildContext context, String pesan, Null Function() callback) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Delete",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          content: Text(
+            pesan,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child:
+                    Text("Cancel", style: Theme.of(context).textTheme.bodySmall)),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (_) {
+                    return BottomNavItem();
+                }));
+                // Navigator.of(context).pop();
+                if (callback != null) {
+                  callback();
+                }
+              },
+              child: Text(
+                "Yes",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          ],
+        );
+      });
+  }
+
   void deleteSchedule(String scheduleId) async {
     try {
       await FirebaseFirestore.instance
@@ -155,27 +196,12 @@ class _UserBookedPageState extends State<UserBookedPage> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                            title: const Text("Apakah Yakin?"),
-                                            content: const Text(
-                                                "Kamu ingin menghapus bookingan ini dari schedule"),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text("Yes"),
-                                                onPressed: () {
-                                                  deleteSchedule(scheduleId);
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (_) {
-                                                    return BottomNavItem();
-                                                  }));
-                                                },
-                                              ),
-                                            ],
-                                          ));
+                                  CustomAlertDelete(context,
+                                    "Kamu ingin menghapus bookingan ini dari schedule?",
+                                    () {
+                                      deleteSchedule(scheduleId);
+                                    }
+                                  );
                                 },
                                 icon: Icon(
                                   Icons.delete,

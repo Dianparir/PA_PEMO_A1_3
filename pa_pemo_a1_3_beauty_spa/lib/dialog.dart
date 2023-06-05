@@ -75,5 +75,3 @@ Future<dynamic> CustomAlertBooking(BuildContext context, String pesan, Null Func
         );
       });
 }
-
-
