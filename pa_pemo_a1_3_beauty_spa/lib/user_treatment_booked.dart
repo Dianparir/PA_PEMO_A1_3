@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+import 'bottom_nav_bar.dart';
+
 class UserBookedPage extends StatefulWidget {
   @override
   _UserBookedPageState createState() => _UserBookedPageState();
@@ -16,6 +18,19 @@ class _UserBookedPageState extends State<UserBookedPage> {
   void initState() {
     super.initState();
     _user = _auth.currentUser!;
+  }
+
+  void deleteSchedule(String scheduleId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('schedule')
+          .doc(scheduleId)
+          .delete();
+
+      print('Schedule deleted successfully');
+    } catch (e) {
+      print('Failed to delete schedule: $e');
+    }
   }
 
   @override
@@ -97,6 +112,7 @@ class _UserBookedPageState extends State<UserBookedPage> {
                       child: Column(
                         children: snapshot.data!.docs
                             .map((DocumentSnapshot document) {
+                              final scheduleId = document.id;
                           Map<String, dynamic> data =
                               document.data() as Map<String, dynamic>;
 
@@ -107,31 +123,47 @@ class _UserBookedPageState extends State<UserBookedPage> {
 
                           total = total + treatmentPrice;
 
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 20),
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.topLeft,
-                            width: widthScreen / 1.3,
-                            height: 110,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 3, color: Colors.white),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Column(
-                              children: [
-                                Text('Treatment Name: $treatmentName'),
-                                Text('Treatment Price: $treatmentPrice'
-                                    .toString()),
-                                Text('Tanggal: $tgl'),
-
-                                Text('Jam: $jam'),
-                                if (tgl.compareTo(formattedDate) < 0)
-                                  Text('EXPIRED'),
-                                // Text('Total: $total'.toString()),
-                              ],
-                            ),
+                          return Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 20),
+                                padding: EdgeInsets.all(10),
+                                alignment: Alignment.topLeft,
+                                width: widthScreen / 1.7,
+                                height: 110,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 3, color: Colors.white),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Name : $treatmentName'),
+                                    Text('Price   : Rp$treatmentPrice'.toString()),
+                                    Text('Date    : $tgl'),
+                                    Text('Time   : $jam'),
+                                    if (tgl.compareTo(formattedDate) < 0)
+                                      Text('EXPIRED'),
+                                    // Text('Total: $total'.toString()),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  deleteSchedule(scheduleId);
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return BottomNavItem();
+                                  }));
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  size: 32,
+                                ),
+                              ),
+                            ],
                           );
                         }).toList(),
                       ),
