@@ -42,13 +42,14 @@ class _UserBookedPageState extends State<UserBookedPage> {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
     return Scaffold(
-      body: ListView(children: [
+        body: ListView(children: [
       Container(
         alignment: Alignment.topCenter,
         height: heightScreen,
         width: widthScreen / 1.5,
         padding: EdgeInsets.all(30),
-        margin: EdgeInsets.only(left: widthScreen/16, right: widthScreen/16),
+        margin:
+            EdgeInsets.only(left: widthScreen / 16, right: widthScreen / 16),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(200), topRight: Radius.circular(200)),
@@ -112,7 +113,7 @@ class _UserBookedPageState extends State<UserBookedPage> {
                       child: Column(
                         children: snapshot.data!.docs
                             .map((DocumentSnapshot document) {
-                              final scheduleId = document.id;
+                          final scheduleId = document.id;
                           Map<String, dynamic> data =
                               document.data() as Map<String, dynamic>;
 
@@ -133,7 +134,8 @@ class _UserBookedPageState extends State<UserBookedPage> {
                                 height: 110,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(width: 3, color: Colors.white),
+                                  border:
+                                      Border.all(width: 3, color: Colors.white),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
                                 ),
@@ -141,7 +143,8 @@ class _UserBookedPageState extends State<UserBookedPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Name : $treatmentName'),
-                                    Text('Price   : Rp$treatmentPrice'.toString()),
+                                    Text('Price   : Rp$treatmentPrice'
+                                        .toString()),
                                     Text('Date    : $tgl'),
                                     Text('Time   : $jam'),
                                     if (tgl.compareTo(formattedDate) < 0)
@@ -152,11 +155,27 @@ class _UserBookedPageState extends State<UserBookedPage> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  deleteSchedule(scheduleId);
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (_) {
-                                    return BottomNavItem();
-                                  }));
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: const Text("Apakah Yakin?"),
+                                            content: const Text(
+                                                "Kamu ingin menghapus bookingan ini dari schedule"),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text("Yes"),
+                                                onPressed: () {
+                                                  deleteSchedule(scheduleId);
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) {
+                                                    return BottomNavItem();
+                                                  }));
+                                                },
+                                              ),
+                                            ],
+                                          ));
                                 },
                                 icon: Icon(
                                   Icons.delete,
