@@ -133,9 +133,12 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          ' Booking Now   ',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: Text(
+                            ' Booking Now   ',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
                         Icon(
                           Icons.forward,
@@ -151,7 +154,7 @@ class _DetailTreatmentsState extends State<DetailTreatments> {
                       ),
                       child: IconButton(
                         icon: Icon(
-                          Icons.create,
+                          Icons.assignment_add,
                         ),
                         color: Colors.white,
                         iconSize: 20,
